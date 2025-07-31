@@ -1,0 +1,1 @@
+Fix: Move audio to public folder and update paths

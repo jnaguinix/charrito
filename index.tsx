@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
+import confetti from 'canvas-confetti';
 
 // Array de rutas a las imágenes locales que el usuario deberá subir
 const IMAGE_PATHS = [
@@ -45,6 +46,7 @@ const App = () => {
   const [gameState, setGameState] = useState<GameState>('start');
   const [cards, setCards] = useState<CardState[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
+  const [mismatchedCards, setMismatchedCards] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
   const [isChecking, setIsChecking] = useState(false);
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
@@ -116,6 +118,7 @@ const App = () => {
       setIsChecking(false);
     } else {
       wrongSoundRef.current?.play().catch(e => console.error("Error playing sound:", e));
+      setMismatchedCards([firstCard.id, secondCard.id]);
       setTimeout(() => {
         setCards(prevCards =>
           prevCards.map(card =>
@@ -125,6 +128,7 @@ const App = () => {
           )
         );
         setFlippedCards([]);
+        setMismatchedCards([]);
         setIsChecking(false);
       }, 1000);
     }
@@ -134,6 +138,11 @@ const App = () => {
     if (cards.length > 0 && cards.every(card => card.isMatched)) {
       winSoundRef.current?.play().catch(e => console.error("Error playing sound:", e));
       setGameState('awaitingName');
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
     }
   }, [cards]);
 
@@ -309,9 +318,10 @@ const App = () => {
             {cards.map((card, index) => (
               <div
                 key={card.id}
-                className={`card ${card.isFlipped || card.isMatched ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}`}
+                className={`card ${card.isFlipped || card.isMatched ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''} ${mismatchedCards.includes(card.id) ? 'mismatched' : ''}`}
                 onClick={() => handleCardClick(index)}
                 aria-label={`Carta ${index + 1}`}
+                style={{ animationDelay: `${index * 40}ms` }}
               >
                 <div className="card-inner">
                   <div className="card-back">

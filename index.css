@@ -163,8 +163,33 @@ body, html {
   height: 32px;
 }
 
+/* Card Animation Keyframes */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+@keyframes pop {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+@keyframes deal-card {
+  from {
+    opacity: 0;
+    transform: scale(0.5) translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 /* Card Styles */
 .card {
+  animation: deal-card 0.4s ease-out forwards;
+  opacity: 0; /* Start hidden for the animation */
   /* Removed aspect-ratio to make cards flexible and fit the grid cell */
   background-color: transparent;
   cursor: pointer;
@@ -192,6 +217,11 @@ body, html {
 }
 .card.matched .card-inner {
    box-shadow: 0 0 15px #fff;
+   animation: pop 0.4s ease-in-out 0.6s; /* Added 0.6s delay */
+}
+
+.card.mismatched .card-inner {
+  animation: shake 0.5s ease-in-out 0.6s; /* Added 0.6s delay */
 }
 
 .card-front, .card-back {
