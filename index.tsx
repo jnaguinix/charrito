@@ -287,9 +287,9 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <audio ref={correctSoundRef} src="./audio/correct.mp3" preload="auto" muted={isMuted}></audio>
-      <audio ref={wrongSoundRef} src="./audio/wrong.mp3" preload="auto" muted={isMuted}></audio>
-      <audio ref={winSoundRef} src="./audio/win.mp3" preload="auto" muted={isMuted}></audio>
+      <audio ref={correctSoundRef} src="/audio/correct.mp3" preload="auto" muted={isMuted}></audio>
+      <audio ref={wrongSoundRef} src="/audio/wrong.mp3" preload="auto" muted={isMuted}></audio>
+      <audio ref={winSoundRef} src="/audio/win.mp3" preload="auto" muted={isMuted}></audio>
       
       {gameState === 'start' && renderStartScreen()}
       
