@@ -1,0 +1,6 @@
+{
+  "name": "Juego de Memoria",
+  "description": "Un juego de memorama para mejorar la memoria subiendo tus propias imágenes.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

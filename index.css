@@ -1,0 +1,388 @@
+:root {
+  --bg-start: #f0c14b;
+  --bg-end: #e6a32a;
+  --bg-page: #34495e;
+  --primary-color: #ffffff;
+  --text-color: #333;
+  --card-bg: #4a4a4a;
+  --card-back-text: #f0f0f0;
+  --border-radius: 12px;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  max-width: 450px;
+  max-height: 850px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 15px;
+}
+
+/* Start Screen */
+.start-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  color: var(--text-color);
+  width: 100%;
+  height: 100%;
+}
+.start-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+.start-container p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+.start-container button {
+  background-color: var(--card-bg);
+  color: var(--primary-color);
+  border: none;
+  padding: 15px 30px;
+  border-radius: var(--border-radius);
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+}
+.start-container button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Game Layout */
+.game-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 0; /* Fix for flex children height issues */
+}
+
+.game-header {
+  padding: 15px 0 5px 0;
+  text-align: center;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: var(--primary-color);
+}
+
+.stat-item {
+  text-align: center;
+}
+.stat-item span {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.timer, .moves-counter {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.game-board {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), 1fr);
+  grid-template-rows: repeat(var(--rows, 5), 1fr);
+  gap: 10px;
+  perspective: 1200px;
+  padding: 10px 0;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.game-footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  flex-shrink: 0;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  padding: 10px;
+  opacity: 0.8;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.icon-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+.icon-button svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Card Styles */
+.card {
+  /* Removed aspect-ratio to make cards flexible and fit the grid cell */
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  min-height: 0;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: var(--border-radius);
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card.matched {
+  cursor: default;
+  opacity: 0.5;
+}
+.card.matched .card-inner {
+   box-shadow: 0 0 15px #fff;
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.card-back {
+  background-color: var(--card-bg);
+  color: var(--card-back-text);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.card-front {
+  background-color: #ffffff;
+  transform: rotateY(180deg);
+  padding: 8px; /* Added padding for the circular image effect */
+}
+
+.card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%; /* Makes the image circular */
+}
+
+/* Highscore Table */
+.highscore-container {
+    width: 100%;
+    max-width: 320px;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: var(--border-radius);
+    color: var(--primary-color);
+}
+.highscore-container h3 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.highscore-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.highscore-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 5px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+}
+.highscore-list li:nth-child(odd) {
+    background-color: rgba(0,0,0,0.1);
+}
+.highscore-list .rank {
+    font-weight: bold;
+    margin-right: 10px;
+    min-width: 20px;
+}
+.highscore-list .name {
+    flex-grow: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.highscore-list .score {
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+/* Modal (Win/Lost) */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    padding: 15px;
+    box-sizing: border-box;
+}
+.modal-content {
+    background: var(--card-bg);
+    color: var(--primary-color);
+    padding: 20px 30px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 400px;
+}
+.modal-content h2 {
+    font-size: 2.2rem;
+    margin-top: 0;
+}
+.modal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* Modal Form */
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+.modal-content input[type="text"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-color: rgba(255,255,255,0.9);
+    color: var(--text-color);
+    font-size: 1.1rem;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.modal-content input[type="text"]:focus {
+    outline: none;
+    border-color: var(--bg-start);
+    box-shadow: 0 0 8px var(--bg-start);
+}
+.modal-content button {
+  background-color: var(--bg-start);
+  color: var(--text-color);
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  width: 100%;
+}
+.modal-content button:hover {
+  background-color: #fff;
+  transform: translateY(-2px);
+}
+.modal-content .highscore-container {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  #root {
+    padding: 0;
+  }
+  .app-container {
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 15px) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 15px);
+  }
+
+  .game-board {
+    gap: 8px;
+  }
+  .card-back {
+    font-size: 1.5rem;
+  }
+  .icon-button svg {
+    width: 28px;
+    height: 28px;
+  }
+  .timer, .moves-counter {
+    font-size: 1.8rem;
+  }
+}
